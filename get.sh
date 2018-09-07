@@ -149,12 +149,15 @@ getBinaryOpenjdk()
 	fi
 	
 	if  [ "${download_url}" != "" ]; then
-		echo "curl -OLJks ${curl_options} "${download_url}""
-		curl -OLJks ${curl_options} "${download_url}"
-		if [ $? -ne 0 ]; then
-			echo "Failed to retrieve the jdk binary, exiting"
-			exit 1
-		fi
+		for file in $download_url
+		do
+			echo "curl -OLJks ${curl_options} $file"
+			curl -OLJks ${curl_options} $file
+			if [ $? -ne 0 ]; then
+				echo "Failed to retrieve the jdk binary, exiting"
+				exit 1
+			fi
+		done
 	fi
 
 	jar_files=`ls`
